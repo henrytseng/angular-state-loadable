@@ -20,7 +20,8 @@ module.exports = function(config) {
     files: [
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'dist/state-loadable.js',
+      'node_modules/angular-state-router/dist/state-router.js',
+      'src/**/*.js',
       'tests/**/*.spec.js'
     ],
 
@@ -33,8 +34,13 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'src/**/*.js': ['browserify'],
+      'tests/**/*.spec.js': [ 'browserify' ]
     },
 
+    browserify: {
+      debug: true
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

@@ -7,10 +7,9 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
   module.exports = 'angular-state-loadable';
 }
 
-// Polyfill
-require('./utils/object');
-require('./utils/process');
-require('./utils/function');
+// Assume polyfill used in StateRouter exists
 
 // Instantiate module
-angular.module('angular-state-loadable', []);
+angular.module('angular-state-loadable', ['angular-state-router'])
+
+  .factory('$loadable', require('./services/loadable'));
