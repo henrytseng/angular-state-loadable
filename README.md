@@ -1,18 +1,25 @@
 StateLoadable
 =============
 
-Provides lazy loading scheme.  
+[![Build Status](https://travis-ci.org/henrytseng/angular-state-loadable.svg?branch=master)](https://travis-ci.org/henrytseng/angular-state-loadable) [![Join the chat at https://gitter.im/henrytseng/angular-state-router](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/henrytseng/angular-state-router?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
-StateLoadable is a modular component designed to be used with StateRouter, an AngularJS state-based router.  
+An AngularJS lazy loading.  
+
+StateLoadable is a modular component designed to be used with [StateRouter](https://www.npmjs.com/package/angular-state-router), an AngularJS state-based router.  
 
 
 
 Install
 -------
 
-To install in your project, simply install from npm
+To install in your project, install from npm (remember you'll also need to install angular-state-router since it is a dependency)
 
 	npm install angular-state-loadable --save
+
+
+
+
+
 
 
 
