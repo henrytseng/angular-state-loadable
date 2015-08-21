@@ -1,7 +1,19 @@
 {
   "name": "angular-state-loadable",
-  "version": "0.9.0",
-  "description": "An AngularJS lazy loading manager for StateRouter",
+  "version": "3.0.1",
+  "description": "A lazy loading scheme",
+  "keywords": [
+    "StateRouter",
+    "angular",
+    "AngularJS",
+    "state",
+    "state machine",
+    "fsm",
+    "finite state machine",
+    "asynchronous",
+    "lazy",
+    "loading"
+  ],
   "main": "dist/state-loadable.js",
   "scripts": {
     "watch": "gulp watch",
@@ -44,6 +56,6 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "angular-state-router": "^1.8.0"
+    "angular-state-router": "^3.0.2"
   }
 }
