@@ -1,8 +1,11 @@
 'use strict';
 
-/* global process:false */
+/* global document:false */
 
-module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q, $document, $rootScope) {
+module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope) {
+
+  // DOM target
+  var _head;
 
   // Instance
   var _self = {};
@@ -19,28 +22,28 @@ module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q
    * 
    * @return {_Loadable} An instance
    */
-  var _Loadable = function(state, src) {
+  var _Loadable = function(src) {
+    var _deferred = $q.defer();
+
     // Instance
     var _loadable = {
-
-      state: state,
 
       src: src,
 
       // Loading completion flag
       isComplete: false,
 
-      promise: $q.defer(),
+      promise: _deferred.promise,
 
-      $element: $document.createElement('script')
-
+      // TODO switch to $document
+      $element: document.createElement('script')
     };
 
     // Build DOM element
-    var _head = $document.getElementsByTagName("head")[0] || $document.documentElement;
     _loadable.$element.src = src;
     _loadable.$element.type = 'text/javascript';
     _loadable.$element.async = false;
+
     _head.insertBefore(_loadable.$element, _head.firstChild);
 
     // Mark loading in progress
@@ -64,7 +67,7 @@ module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q
         }
         _completedList.push(_loadable);
 
-        _loadable.promise.resolve(_loadable);
+        _deferred.resolve(_loadable);
       }
     };
 
@@ -85,30 +88,29 @@ module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q
   /**
    * Create a _Loadable.  Does not replace previously created instances.  
    * 
-   * @param  {String}  state A state name
-   * @param  {String}  src   A source path for script asset
-   * @return {_Loadable}      A loadable instance
+   * @param  {String}    src A source path for script asset
+   * @return {_Loadable}     A loadable instance
    */
-  var _createLoadable = function(state, src) {
+  var _createLoadable = function(src) {
     var loadable;
 
     // Valid state name required
-    if(!state || state === '') {
+    if(!src || src === '') {
       var error;
-      error = new Error('Loadable requires a valid state name.');
+      error = new Error('Loadable requires a valid source.');
       error.code = 'invalidname';
       throw error;
     }
 
     // Already exists
-    if(_loadableHash[state]) {
-      loadable = _loadableHash[state];
+    if(_loadableHash[src]) {
+      loadable = _loadableHash[src];
 
     // Create new
     } else {
       // Create new instance
-      loadable = new _Loadable(state, src);
-      _loadableHash[state] = loadable;
+      loadable = new _Loadable(src);
+      _loadableHash[src] = loadable;
 
       // Broadcast creation, progress
       $rootScope.$broadcast('$loadableCreated', loadable);
@@ -129,24 +131,38 @@ module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q
   };
 
   /**
-   * Get loadable, if does not exist create
+   * Load all required items
    * 
-   * @param  {String}  state A state name
-   * @return {_Loadable}      A loadable instance
+   * @param  {Function} callback A callback, function(err)
    */
-  var _getLoadable = function(state) {
-    return _loadableHash[state];
+  var _load = function(callback) {
+    var current = $state.current();
+
+    // Evaluate
+    if(current) {
+      var sources = (typeof current.load === 'string' ? [current.load] : current.load) || [];
+      
+      // Get promises
+      $q.all(sources.map(function(src) {
+        return _createLoadable(src).promise;
+      }))
+          .then(function() {
+            callback();
+          }, function(err) {
+            $rootScope.$broadcast('$loadableError', err);
+            callback(err);
+          });
+
+    // No state
+    } else {
+      callback();
+    }
   };
 
   /**
    * Create a loadable, get reference to existing methods
    */
-  _self.create = _createLoadable;
-
-  /**
-   * Get a loadable
-   */
-  _self.get = _getLoadable;
+  _self.get = _createLoadable;
 
   /**
    * Get progress
@@ -155,10 +171,17 @@ module.exports = ['$state', '$q', '$document', '$rootScope', function($state, $q
    */
   _self.progress = _getProgress;
 
+  /**
+   * Ready
+   */
+  _self.$ready = function() {
+    _head = angular.element(document.querySelector('head'))[0];
+  };
+
   // Register middleware layer
   $state.$use(function(request, next) {
-    next();
-  });
+    _load(next);
+  }, 1);
 
   return _self;
 }];

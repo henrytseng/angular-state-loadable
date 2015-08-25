@@ -12,4 +12,8 @@ if (typeof module !== "undefined" && typeof exports !== "undefined" && module.ex
 // Instantiate module
 angular.module('angular-state-loadable', ['angular-state-router'])
 
-  .factory('$loadableManager', require('./services/loadable-manager'));
+  .factory('$loadableManager', require('./services/loadable-manager'))
+
+  .run(['$loadableManager', function($loadableManager) {
+    $loadableManager.$ready();
+  }]);
