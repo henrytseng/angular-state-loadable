@@ -18,56 +18,30 @@ To install in your project, install from npm (remember you'll also need to insta
 
 
 
-
-
-
-
-
 Events
 ------
 
-Events are emit from $state; where $state inherits from [events.EventEmitter](https://nodejs.org/api/events.html).  
+Events are broadcast on the `$rootScope`.  
 
-To listen to events 
-
-	$state.on('load:start', function() {
-		// ...
-	});
-
-
-
-Event: 'load:start'
--------------------
+### $loadableCreated
 
 This event is emitted when a loadable object starts loading.  
 
 
 
-Event: 'load:progress'
-----------------------
+### $loadableProgress
 
 This event is emitted when a loadable object progresses loading.  This event must occur once before `'end'` is emitted.  
 
 
 
-Event: 'load:end'
------------------
+### $loadableComplete
 
 This event is emitted when a loadable object completes loading.  
 
 
 
-Event: 'error'
---------------
-
-* `request` *Object* Requested data `{ name: 'nextState', params: {} }`
-
-This event is emitted whenever an error occurs.  
-
-
-
-Event: 'error:load'
--------------------
+### $loadableError
 
 This event is emitted when an error occurred during loading of a loadable.  
 
