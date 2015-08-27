@@ -1,6 +1,6 @@
 {
   "name": "angular-state-loadable",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A lazy loading scheme",
   "keywords": [
     "StateRouter",
@@ -56,6 +56,6 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "angular-state-router": "^3.0.5"
+    "angular-state-router": "^3.0.7"
   }
 }

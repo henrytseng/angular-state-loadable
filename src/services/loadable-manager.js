@@ -161,8 +161,13 @@ module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope)
 
   /**
    * Create a loadable, get reference to existing methods
+   * 
+   * @param  {String}    src A source path for script asset
+   * @return {Promise}       A promise fulfilled when the resource is loaded
    */
-  _self.get = _createLoadable;
+  _self.get = function(src) {
+    return _createLoadable(src).promise;
+  };
 
   /**
    * Get progress
