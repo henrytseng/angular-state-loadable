@@ -1,6 +1,6 @@
 {
   "name": "angular-state-loadable",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "A lazy loading scheme",
   "keywords": [
     "StateRouter",
@@ -16,7 +16,7 @@
     "flexible",
     "lightweight"
   ],
-  "main": "dist/state-loadable.js",
+  "main": "src/index.js",
   "scripts": {
     "watch": "gulp watch",
     "test": "./node_modules/karma/bin/karma start tests/karma.conf.js --single-run --browsers PhantomJS"
