@@ -3,7 +3,7 @@ StateLoadable
 
 [![Build Status](https://travis-ci.org/henrytseng/angular-state-loadable.svg?branch=master)](https://travis-ci.org/henrytseng/angular-state-loadable) [![Join the chat at https://gitter.im/henrytseng/angular-state-router](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/henrytseng/angular-state-router?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
-An AngularJS lazy loading.  
+A lightweight and flexible AngularJS lazy loading scheme.
 
 StateLoadable is a modular component designed to be used with [StateRouter](https://www.npmjs.com/package/angular-state-router), an AngularJS state-based router.  
 
