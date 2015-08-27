@@ -18,10 +18,61 @@ To install in your project, install from npm (remember you'll also need to insta
 
 
 
+Quick Start
+-----------
+
+Include the `state-loadable.min.js` script tag in your `.html`:
+
+	<html ng-app="myApp">
+	  <head>
+	    <script src="/node_modules/angular/angular.min.js"></script>
+	    <script src="/node_modules/angular-state-router/dist/state-router.min.js"></script>
+	    <script src="/node_modules/angular-state-loadable/dist/state-loadable.min.js"></script>
+	    <script src="/js/app.js"></script>
+	  </head>
+	  <body>
+	    ...
+	  </body>
+	</html>
+
+In `app.js` add `angular-state-router` and `angular-state-loadable` as a dependency when your application module is instantiated.  
+
+	var myApp = angular.module('myApp', ['angular-state-router', 'angular-state-loadable']);
+
+During the configuration of StateRouter utilize the parameter `load` to associate a script file to lazy load.  Loadables will only load once, that is, the first time that they are needed.  
+
+	myApp
+	  .config(function($stateProvider) {
+	    $stateProvider
+	        .state('search', {
+	          url: '/search',
+	          
+	          // An Array of files or a single file name String
+	          load: ['components/search.js']
+	          
+	        });
+	  });
+
+Where `components.search.js` is the following file:
+
+	myApp
+	  .controller('SearchController', function() {
+	    // ...
+	  });
+
+StateLoadable is meant to be flexible and therefore does not impose any scheme for registering angular components (directives, controllers, filters, services, providers, and/or ... etc.)  
+
+We suggest using the scheme in the example code for late registration of these components.  
+
+Remember that `$stateProvider` is different from `$state`.  
+
+
+
 Events
 ------
 
 Events are broadcast on the `$rootScope`.  
+
 
 ### $loadableCreated
 

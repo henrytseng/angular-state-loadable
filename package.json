@@ -1,6 +1,6 @@
 {
   "name": "angular-state-loadable",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A lazy loading scheme",
   "keywords": [
     "StateRouter",
@@ -12,7 +12,9 @@
     "finite state machine",
     "asynchronous",
     "lazy",
-    "loading"
+    "loading",
+    "flexible",
+    "lightweight"
   ],
   "main": "dist/state-loadable.js",
   "scripts": {
