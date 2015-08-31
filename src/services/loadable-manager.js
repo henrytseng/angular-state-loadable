@@ -158,6 +158,7 @@ module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope)
       callback();
     }
   };
+  _self.$load = _load;
 
   /**
    * Create a loadable, get reference to existing methods
