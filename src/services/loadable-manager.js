@@ -133,9 +133,11 @@ module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope)
   /**
    * Load all required items
    * 
-   * @param  {Function} callback A callback, function(err)
+   * @return {Promise} A promise fulfilled when the resources are loaded
    */
-  var _load = function(callback) {
+  var _load = function() {
+    var deferred = $q.defer();
+
     var current = $state.current();
 
     // Evaluate
@@ -143,20 +145,31 @@ module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope)
       var sources = (typeof current.load === 'string' ? [current.load] : current.load) || [];
       
       // Get promises
-      $q.all(sources.map(function(src) {
-        return _createLoadable(src).promise;
-      }))
+      $q.all(sources
+        .map(function(src) {
+          return _createLoadable(src);
+        })
+        .filter(function(loadable) {
+          return !loadable.isComplete;
+        })
+        .map(function(loadable) {
+          return loadable.promise;
+        })
+      )
           .then(function() {
-            callback();
+            deferred.resolve();
+
           }, function(err) {
             $rootScope.$broadcast('$loadableError', err);
-            callback(err);
+            deferred.reject(err);
           });
 
     // No state
     } else {
-      callback();
+      deferred.resolve();
     }
+
+    return deferred.promise;
   };
   _self.$load = _load;
 
@@ -182,12 +195,23 @@ module.exports = ['$state', '$q', '$rootScope', function($state, $q, $rootScope)
    */
   _self.$ready = function() {
     _head = angular.element(document.querySelector('head'))[0];
-  };
 
-  // Register middleware layer
-  $state.$use(function(request, next) {
-    _load(next);
-  }, 1);
+    // Register middleware layer
+    $state.$use(function(request, next) {
+      next();
+
+      // Load after state change is finished to avoid collision
+      request.promise.then(function() {
+        _load();
+      });
+
+    }, 1);
+
+    // Refresh after all loadables are done
+    $rootScope.$on('$loadableComplete', function() {
+      $state.reload();
+    });
+  };
 
   return _self;
 }];
