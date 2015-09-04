@@ -1,6 +1,6 @@
 {
   "name": "angular-state-loadable",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "A lazy loading scheme",
   "keywords": [
     "StateRouter",
